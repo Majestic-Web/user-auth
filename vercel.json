@@ -1,0 +1,29 @@
+{
+    "functions": {
+      "api/signup.js": {
+        "maxDuration": 10,
+        "memory": 128,
+        "regions": ["all"]
+      }
+    },
+    "headers": [
+      {
+        "source": "/api/signup",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Methods",
+            "value": "GET, POST, OPTIONS"
+          },
+          {
+            "key": "Access-Control-Allow-Headers",
+            "value": "Content-Type, Authorization"
+          },
+          {
+            "key": "Access-Control-Allow-Credentials",
+            "value": "true"
+          }
+        ]
+      }
+    ]
+  }
+  

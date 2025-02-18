@@ -1,21 +1,23 @@
 import { supabase } from '../../lib/supabaseClient';
 
 const handler = async (req, res) => {
-  const allowedOrigins = [
-    'https://app-testing-next-js-supabase.webflow.io',
-    'https://user-auth-wine.vercel.app',
-  ];
+  // Получаем список разрешенных доменов из переменной окружения
+  const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS.split(", ");
 
   const origin = req.headers.origin;
+
   if (allowedOrigins.includes(origin)) {
-    // Устанавливаем заголовки для разрешения CORS, если Origin разрешен
+    // Если Origin разрешен, добавляем необходимые заголовки
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
+  } else {
+    // Если Origin не разрешен, возвращаем ошибку
+    return res.status(403).json({ error: 'Forbidden: Origin not allowed' });
   }
 
-  // Если это preflight запрос (OPTIONS), то просто возвращаем успешный ответ
+  // Если это preflight запрос (OPTIONS), просто возвращаем успешный ответ
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -48,4 +50,5 @@ const handler = async (req, res) => {
 };
 
 export default handler;
+
 
