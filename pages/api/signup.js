@@ -2,7 +2,7 @@ import { supabase } from '../../lib/supabaseClient';
 
 const handler = async (req, res) => {
   // Устанавливаем заголовки для разрешения CORS
-  res.setHeader('Access-Control-Allow-Origin', 'https://app-testing-next-js-supabase.webflow.io'); // Разрешаем только Webflow
+  res.setHeader('Access-Control-Allow-Origin', 'https://app-testing-next-js-supabase.webflow.io , https://user-auth-wine.vercel.app'); // Разрешаем только Webflow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Разрешаем методы
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Разрешаем заголовки
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Добавить, если используете cookies или сессии
