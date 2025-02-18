@@ -12,8 +12,9 @@ const handler = async (req, res) => {
 
     if (!allowedOrigins.includes(origin)) {
       return res.status(403).json({ error: 'Forbidden: Origin not allowed' });
-    }
 
+    }
+    console.log('Request Origin:', origin);
     setCorsHeaders(res, origin);
 
     if (req.method === 'OPTIONS') {
