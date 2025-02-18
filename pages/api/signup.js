@@ -1,11 +1,19 @@
 import { supabase } from '../../lib/supabaseClient';
 
 const handler = async (req, res) => {
-  // Устанавливаем заголовки для разрешения CORS
-  res.setHeader('Access-Control-Allow-Origin', 'https://app-testing-next-js-supabase.webflow.io , https://user-auth-wine.vercel.app'); // Разрешаем только Webflow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Разрешаем методы
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Разрешаем заголовки
-  res.setHeader('Access-Control-Allow-Credentials', 'true'); // Добавить, если используете cookies или сессии
+  const allowedOrigins = [
+    'https://app-testing-next-js-supabase.webflow.io',
+    'https://user-auth-wine.vercel.app',
+  ];
+
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    // Устанавливаем заголовки для разрешения CORS, если Origin разрешен
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
 
   // Если это preflight запрос (OPTIONS), то просто возвращаем успешный ответ
   if (req.method === 'OPTIONS') {
