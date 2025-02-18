@@ -2,7 +2,6 @@ import { supabase } from '../../lib/supabaseClient';
 
 const handler = async (req, res) => {
   try {
-    // Obtain allowed origins and validate
     const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS?.split(", ");
     if (!allowedOrigins) {
       return res.status(500).json({ error: 'Server error: Allowed origins not configured' });
@@ -12,9 +11,8 @@ const handler = async (req, res) => {
 
     if (!allowedOrigins.includes(origin)) {
       return res.status(403).json({ error: 'Forbidden: Origin not allowed' });
-
     }
-    console.log('Request Origin:', origin);
+
     setCorsHeaders(res, origin);
 
     if (req.method === 'OPTIONS') {
@@ -31,9 +29,11 @@ const handler = async (req, res) => {
     if (signUpError) {
       throw new Error(signUpError.message);
     }
-    const { session, error: sessionError } = await supabase.auth.api.getSession();
-    if (sessionError) {
-      throw new Error(sessionError.message);
+
+    // Use the correct method to get the session
+    const session = supabase.auth.session();
+    if (!session) {
+      throw new Error('Failed to retrieve session');
     }
 
     return res.status(200).json({ user, session });
@@ -42,7 +42,6 @@ const handler = async (req, res) => {
   }
 };
 
-// Function to set CORS headers
 function setCorsHeaders(res, origin) {
   res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -51,5 +50,6 @@ function setCorsHeaders(res, origin) {
 }
 
 export default handler;
+
 
 
